@@ -1,0 +1,50 @@
+@baseUrl = http://localhost:3000/api/v1/tasks
+@id = PEGA_ID_DE_LA_RESPUESTA
+
+### Listar tareas
+GET {{baseUrl}}
+Accept: application/json
+
+### Filtrar tareas pendientes
+GET {{baseUrl}}?status=pending
+Accept: application/json
+
+### Crear tarea: 201
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "title": "Verificar persistencia S23",
+  "priority": "high"
+}
+
+### Obtener tarea
+GET {{baseUrl}}/{{id}}
+Accept: application/json
+
+### Actualizar tarea
+PATCH {{baseUrl}}/{{id}}
+Content-Type: application/json
+
+{
+  "status": "done"
+}
+
+### Estado inválido: 400
+PATCH {{baseUrl}}/{{id}}
+Content-Type: application/json
+
+{
+  "status": "invalido"
+}
+
+### Campo no permitido: 400
+PATCH {{baseUrl}}/{{id}}
+Content-Type: application/json
+
+{
+  "ownerId": "000000000000000000000000"
+}
+
+### Eliminar tarea: 204
+DELETE {{baseUrl}}/{{id}}
