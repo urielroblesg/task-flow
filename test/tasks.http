@@ -12,6 +12,7 @@ Accept: application/json
 ### Crear tarea: 201
 POST {{baseUrl}}
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2wiOiI2YWY0ZTgyZjNhNGUxOTI1MWY4YzFiY2EiLCJpYXQiOjE3OTQ1MTg2OTcsImF1ZCI6InRhc2Zsb3ctY2xpZW50IiwiaXNzIjoidGFza2Zsb3ctYXBpIiwic3ViIjoiNmFmNTBmMzg0N2Q1NjQ5ZTczMzVlMGRhIn0.EIAatzlRLu_NwVLbNCvE7A8LwPqXjEWh53_o0j6ffmg
 
 {
   "title": "Verificar persistencia S23",

@@ -4,6 +4,7 @@ import * as eliminarTarea from '../useCases/tasks/eliminar-tarea.caso-uso.js';
 import * as listarTareas from '../useCases/tasks/listar-tareas.caso-uso.js';
 import * as obtenerTareaPorId from '../useCases/tasks/obtener-tarea-por-id.caso-uso.js';
 
+/** @type {import('express').RequestHandler} */
 export const listar = async (solicitud, respuesta, siguiente) => {
   try {
     const tareas = await listarTareas.ejecutar(solicitud.query);
@@ -13,6 +14,7 @@ export const listar = async (solicitud, respuesta, siguiente) => {
   }
 };
 
+/** @type {import('express').RequestHandler} */
 export const obtenerPorId = async (solicitud, respuesta, siguiente) => {
   try {
     const tarea = await obtenerTareaPorId.ejecutar(solicitud.params.id);
@@ -22,6 +24,7 @@ export const obtenerPorId = async (solicitud, respuesta, siguiente) => {
   }
 };
 
+/** @type {import('express').RequestHandler} */
 export const crear = async (solicitud, respuesta, siguiente) => {
   try {
     const tarea = await crearTarea.ejecutar(solicitud.body);
@@ -31,6 +34,7 @@ export const crear = async (solicitud, respuesta, siguiente) => {
   }
 };
 
+/** @type {import('express').RequestHandler} */
 export const actualizar = async (solicitud, respuesta, siguiente) => {
   try {
     const tarea = await actualizarTarea.ejecutar(solicitud.params.id, solicitud.body);
@@ -40,6 +44,7 @@ export const actualizar = async (solicitud, respuesta, siguiente) => {
   }
 };
 
+/** @type {import('express').RequestHandler} */
 export const eliminar = async (solicitud, respuesta, siguiente) => {
   try {
     await eliminarTarea.ejecutar(solicitud.params.id);

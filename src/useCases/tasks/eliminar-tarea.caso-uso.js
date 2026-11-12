@@ -5,8 +5,8 @@ import { requerirTarea } from './tarea.validaciones.js';
 /**
  * Elimina una tarea.
  *
- * @param {Number} identificador
- * @returns {Boolean}
+ * @param {import('../../types.js').Id} identificador
+ * @returns {Promise<import('../../types.js').Tarea>}
  */
 export const ejecutar = async identificador => {
   checkId(identificador);

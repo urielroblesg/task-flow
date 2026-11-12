@@ -6,8 +6,8 @@ Content-Type: application/json
 
 {
   "name": "Ana Pérez",
-  "email": "ana@example.com",
-  "password": "password123"
+  "email": "ana_trabajo@example.com",
+  "password": "password123456789"
 }
 
 ### Registro sin correo: 400
@@ -44,8 +44,8 @@ POST {{baseUrl}}/login
 Content-Type: application/json
 
 {
-  "email": "ana@example.com",
-  "password": "password123"
+  "email": "ana_trabajo@example.com",
+  "password": "password123456789"
 }
 
 ### Login con contraseña incorrecta: 401

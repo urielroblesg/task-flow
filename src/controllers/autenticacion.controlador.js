@@ -4,6 +4,7 @@ import * as cerrarSesion from '../useCases/auth/cerrar-sesion.caso-uso.js';
 import * as iniciarSesion from '../useCases/auth/iniciar-sesion.caso-uso.js';
 import * as registrarUsuario from '../useCases/auth/registrar-usuario.caso-uso.js';
 
+/** @type {import('express').RequestHandler} */
 export const registrar = async (solicitud, respuesta, siguiente) => {
   try {
     const usuario = await registrarUsuario.ejecutar(obtenerDatosValidados(solicitud));
@@ -16,6 +17,7 @@ export const registrar = async (solicitud, respuesta, siguiente) => {
   }
 };
 
+/** @type {import('express').RequestHandler} */
 export const iniciar = async (solicitud, respuesta, siguiente) => {
   try {
     const usuario = await iniciarSesion.ejecutar(obtenerDatosValidados(solicitud));
@@ -28,6 +30,7 @@ export const iniciar = async (solicitud, respuesta, siguiente) => {
   }
 };
 
+/** @type {import('express').RequestHandler} */
 export const cerrar = async (_solicitud, respuesta, siguiente) => {
   try {
     const resultado = await cerrarSesion.ejecutar();

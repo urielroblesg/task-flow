@@ -1,3 +1,4 @@
+/** @type {import('express').ErrorRequestHandler} */
 const manejadorErrores = (error, _solicitud, respuesta, _siguiente) => {
   if (error.name === 'ValidationError' || error.name === 'CastError') {
     return respuesta.status(400).json({ message: 'Datos inválidos para la tarea' });

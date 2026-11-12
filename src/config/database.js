@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+/** @returns {Promise<void>} */
 export const conectarBd = async () => {
   const connectionString = process.env.MONGO_DB_URI;
 

@@ -1,6 +1,7 @@
 import { Schema, SchemaTypes, model } from 'mongoose';
 
 import validator from 'validator';
+import bcrypt from 'bcrypt';
 
 export const userSchema = new Schema({
   name: {
@@ -24,6 +25,11 @@ export const userSchema = new Schema({
     type: SchemaTypes.String,
     trim: true,
     required: true,
+    validate: {
+      /** @param {unknown} valor @returns {boolean} */
+      validator: valor => typeof valor === 'string' && valor.length >= 12,
+      message: 'La contraseña: minimo 12 caracteres',
+    },
   },
   rol: {
     type: SchemaTypes.ObjectId,
@@ -38,6 +44,13 @@ export const userSchema = new Schema({
     type: SchemaTypes.Date,
     default: Date.now,
   },
+});
+
+/** Cifra contraseña modificada antes de guardar. @returns {Promise<void>} */
+userSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
+
+  this.password = await bcrypt.hash(this.password, 12);
 });
 
 export const Usuario = model('usuario', userSchema);

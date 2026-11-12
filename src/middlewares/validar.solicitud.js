@@ -1,6 +1,7 @@
 import { response as respuestaExpress } from 'express';
 import { validationResult as resultadoValidacion } from 'express-validator';
 
+/** @type {import('express').RequestHandler} */
 export const validarSolicitud = (solicitud, respuesta = respuestaExpress, siguiente) => {
   const errores = resultadoValidacion(solicitud);
   if (!errores.isEmpty()) {

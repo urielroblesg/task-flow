@@ -13,6 +13,7 @@ const roles = [
   },
 ];
 
+/** @returns {Promise<import('mongodb').BulkWriteResult>} */
 export const sembrarRoles = () => Rol.bulkWrite(
   roles.map(rol => ({
     updateOne: {
