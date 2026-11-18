@@ -1,9 +1,11 @@
 @baseUrl = http://localhost:3000/api/v1/tasks
-@id = PEGA_ID_DE_LA_RESPUESTA
+@id = REEMPLAZAR_ID_TAREA
+@token = REEMPLAZAR_TOKEN
 
 ### Listar tareas
 GET {{baseUrl}}
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ### Filtrar tareas pendientes
 GET {{baseUrl}}?status=pending
@@ -12,20 +14,22 @@ Accept: application/json
 ### Crear tarea: 201
 POST {{baseUrl}}
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2wiOiI2YWY0ZTgyZjNhNGUxOTI1MWY4YzFiY2EiLCJpYXQiOjE3OTQ1MTg2OTcsImF1ZCI6InRhc2Zsb3ctY2xpZW50IiwiaXNzIjoidGFza2Zsb3ctYXBpIiwic3ViIjoiNmFmNTBmMzg0N2Q1NjQ5ZTczMzVlMGRhIn0.EIAatzlRLu_NwVLbNCvE7A8LwPqXjEWh53_o0j6ffmg
+Authorization: Bearer {{token}}
 
 {
-  "title": "Verificar persistencia S23",
+  "title": "Tarea de Ana",
   "priority": "high"
 }
 
 ### Obtener tarea
 GET {{baseUrl}}/{{id}}
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ### Actualizar tarea
 PATCH {{baseUrl}}/{{id}}
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "status": "done"

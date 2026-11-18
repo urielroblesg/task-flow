@@ -17,6 +17,7 @@ jest.unstable_mockModule('../../../src/useCases/tasks/listar-tareas.caso-uso.js'
 jest.unstable_mockModule('../../../src/useCases/tasks/obtener-tarea-por-id.caso-uso.js', () => ({ ejecutar: casos.obtener }));
 
 let controlador;
+const usuario = { id: '507f191e810c19729de860ea' };
 
 beforeAll(async () => {
   controlador = await import('../../../src/controllers/tarea.controlador.js');
@@ -30,37 +31,42 @@ describe('controlador de tareas', () => {
   it('lista tareas', async () => {
     casos.listar.mockResolvedValue([{ id: 1 }]);
     const respuesta = crearRespuesta();
-    await controlador.listar({ query: { status: 'TODO' } }, respuesta, jest.fn());
+    await controlador.listar({ query: { status: 'TODO' }, usuario }, respuesta, jest.fn());
     expect(respuesta.json).toHaveBeenCalledWith([{ id: 1 }]);
+    expect(casos.listar).toHaveBeenCalledWith({ status: 'TODO' }, usuario.id);
   });
 
   it('obtiene tarea', async () => {
     const respuesta = crearRespuesta();
     casos.obtener.mockResolvedValue({ id: 1 });
-    await controlador.obtenerPorId({ params: { id: '1' } }, respuesta, jest.fn());
+    await controlador.obtenerPorId({ params: { id: '1' }, usuario }, respuesta, jest.fn());
     expect(respuesta.json).toHaveBeenCalledWith({ id: 1 });
+    expect(casos.obtener).toHaveBeenCalledWith('1', usuario.id);
   });
 
   it('crea con estado 201', async () => {
     casos.crear.mockResolvedValue({ id: 4 });
     const respuesta = crearRespuesta();
-    await controlador.crear({ body: { title: 'Tarea' } }, respuesta, jest.fn());
+    await controlador.crear({ body: { title: 'Tarea' }, usuario }, respuesta, jest.fn());
     expect(respuesta.status).toHaveBeenCalledWith(201);
     expect(respuesta.json).toHaveBeenCalledWith({ id: 4 });
+    expect(casos.crear).toHaveBeenCalledWith({ title: 'Tarea' }, usuario.id);
   });
 
   it('actualiza tarea', async () => {
     const respuesta = crearRespuesta();
     casos.actualizar.mockResolvedValue({ id: 1 });
-    await controlador.actualizar({ body: {}, params: { id: '1' } }, respuesta, jest.fn());
+    await controlador.actualizar({ body: {}, params: { id: '1' }, usuario }, respuesta, jest.fn());
     expect(respuesta.json).toHaveBeenCalledWith({ id: 1 });
+    expect(casos.actualizar).toHaveBeenCalledWith('1', {}, usuario.id);
   });
 
   it('elimina con 204', async () => {
     const respuesta = crearRespuesta();
     casos.eliminar.mockResolvedValue({ id: 1 });
-    await controlador.eliminar({ params: { id: '1' } }, respuesta, jest.fn());
+    await controlador.eliminar({ params: { id: '1' }, usuario }, respuesta, jest.fn());
     expect(respuesta.status).toHaveBeenCalledWith(204);
+    expect(casos.eliminar).toHaveBeenCalledWith('1', usuario.id);
   });
 
   it.each(['listar', 'obtenerPorId', 'crear', 'actualizar', 'eliminar'])('propaga errores desde %s', async metodo => {
@@ -68,7 +74,7 @@ describe('controlador de tareas', () => {
     const error = new Error('fallo');
     casos[mapa[metodo]].mockRejectedValue(error);
     const siguiente = jest.fn();
-    await controlador[metodo]({ body: {}, params: {}, query: {} }, crearRespuesta(), siguiente);
+    await controlador[metodo]({ body: {}, params: {}, query: {}, usuario }, crearRespuesta(), siguiente);
     expect(siguiente).toHaveBeenCalledWith(error);
   });
 });

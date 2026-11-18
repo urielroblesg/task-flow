@@ -11,6 +11,7 @@ let eliminar;
 let listar;
 let obtener;
 const ID = '507f1f77bcf86cd799439011';
+const PROPIETARIO = '507f191e810c19729de860ea';
 
 beforeAll(async () => {
   [actualizar, crear, eliminar, listar, obtener] = await Promise.all([
@@ -27,8 +28,8 @@ beforeEach(() => jest.clearAllMocks());
 describe('casos de uso de tareas', () => {
   it('crea usando solo campos permitidos', async () => {
     repositorio.crear.mockResolvedValue({ id: ID, title: 'Nueva' });
-    await expect(crear.ejecutar({ title: 'Nueva' })).resolves.toMatchObject({ id: ID });
-    expect(repositorio.crear).toHaveBeenCalledWith({ title: 'Nueva' });
+    await expect(crear.ejecutar({ title: 'Nueva' }, PROPIETARIO)).resolves.toMatchObject({ id: ID });
+    expect(repositorio.crear).toHaveBeenCalledWith({ title: 'Nueva', propietario: PROPIETARIO });
   });
 
   it('rechaza campos no permitidos', async () => {
@@ -37,31 +38,44 @@ describe('casos de uso de tareas', () => {
 
   it('valida filtro de estado', async () => {
     repositorio.buscarTodas.mockResolvedValue(['tarea']);
-    await expect(listar.ejecutar({ status: 'pending' })).resolves.toEqual(['tarea']);
+    await expect(listar.ejecutar({ status: 'pending' }, PROPIETARIO)).resolves.toEqual(['tarea']);
+    expect(repositorio.buscarTodas).toHaveBeenCalledWith({ status: 'pending' }, PROPIETARIO);
     await expect(listar.ejecutar({ status: 'otro' })).rejects.toMatchObject({ status: 400 });
   });
 
   it('obtiene por ObjectId y genera 404', async () => {
     repositorio.buscarPorId.mockResolvedValueOnce({ id: ID }).mockResolvedValueOnce(null);
-    await expect(obtener.ejecutar(ID)).resolves.toEqual({ id: ID });
-    await expect(obtener.ejecutar(ID)).rejects.toMatchObject({ status: 404 });
+    await expect(obtener.ejecutar(ID, PROPIETARIO)).resolves.toEqual({ id: ID });
+    expect(repositorio.buscarPorId).toHaveBeenCalledWith(ID, PROPIETARIO);
+    await expect(obtener.ejecutar(ID, PROPIETARIO)).rejects.toMatchObject({ status: 404 });
   });
 
   it('rechaza identificador inválido', async () => {
-    await expect(obtener.ejecutar('abc')).rejects.toMatchObject({ status: 400 });
+    await expect(obtener.ejecutar('abc', PROPIETARIO)).rejects.toMatchObject({ status: 400 });
   });
 
   it('actualiza tarea existente', async () => {
     repositorio.actualizar.mockResolvedValue({ id: ID, status: 'done' });
-    await expect(actualizar.ejecutar(ID, { status: 'done' })).resolves.toMatchObject({ status: 'done' });
+    await expect(actualizar.ejecutar(ID, { status: 'done' }, PROPIETARIO)).resolves.toMatchObject({ status: 'done' });
+    expect(repositorio.actualizar).toHaveBeenCalledWith(ID, { status: 'done' }, PROPIETARIO);
   });
 
   it('rechaza actualización vacía', async () => {
-    await expect(actualizar.ejecutar(ID, {})).rejects.toMatchObject({ status: 400 });
+    await expect(actualizar.ejecutar(ID, {}, PROPIETARIO)).rejects.toMatchObject({ status: 400 });
   });
 
   it('elimina tarea existente', async () => {
     repositorio.eliminar.mockResolvedValue({ id: ID });
-    await expect(eliminar.ejecutar(ID)).resolves.toEqual({ id: ID });
+    await expect(eliminar.ejecutar(ID, PROPIETARIO)).resolves.toEqual({ id: ID });
+    expect(repositorio.eliminar).toHaveBeenCalledWith(ID, PROPIETARIO);
+  });
+
+  it.each([
+    ['obtener', () => obtener.ejecutar(ID, PROPIETARIO), repositorio.buscarPorId],
+    ['actualizar', () => actualizar.ejecutar(ID, { status: 'done' }, PROPIETARIO), repositorio.actualizar],
+    ['eliminar', () => eliminar.ejecutar(ID, PROPIETARIO), repositorio.eliminar],
+  ])('oculta con 404 una tarea ajena al %s', async (_nombre, ejecutar, operacion) => {
+    operacion.mockResolvedValue(null);
+    await expect(ejecutar()).rejects.toMatchObject({ status: 404, message: 'Tarea no encontrada' });
   });
 });

@@ -1,4 +1,4 @@
-import { Task } from "../entities/tarea.entidad.js";
+import { Task } from '../entities/tarea.entidad.js';
 
 /**
  * Convierte un documento de Mongoose en DTO.
@@ -15,12 +15,10 @@ const toDto = (doc) => {
 };
 
 /** @param {Partial<import('../types.js').TareaEntrada>} [filtros] @returns {Promise<import('../types.js').Tarea[]>} */
-export const buscarTodas = async (filtros = {}) =>
-  (await Task.find(filtros)).map(toDto);
+export const buscarTodas = async (filtros = {}, propietario) => (await Task.find({ ...filtros, propietario })).map(toDto);
 
-/** @param {import('../types.js').Id} identificador @returns {Promise<import('../types.js').Tarea | null>} */
-export const buscarPorId = async (identificador) =>
-  toDto(await Task.findById(identificador));
+/** @param {import('../types.js').Id} identificador @param {import('../types.js').Id} propietario @returns {Promise<import('../types.js').Tarea | null>} */
+export const buscarPorId = async (identificador, propietario) => toDto(await Task.findOne({ _id: identificador, propietario }));
 
 /** @param {import('../types.js').TareaEntrada} datos @returns {Promise<import('../types.js').Tarea>} */
 export const crear = async (datos) => {
@@ -28,13 +26,13 @@ export const crear = async (datos) => {
   return toDto(task);
 };
 
-/** @param {import('../types.js').Id} identificador @param {Partial<import('../types.js').TareaEntrada>} datos @returns {Promise<import('../types.js').Tarea | null>} */
-export const actualizar = async (identificador, datos) => {
-  const taskActualizada = await Task.findByIdAndUpdate(
-    identificador,
+/** @param {import('../types.js').Id} identificador @param {Partial<import('../types.js').TareaEntrada>} datos @param {import('../types.js').Id} propietario @returns {Promise<import('../types.js').Tarea | null>} */
+export const actualizar = async (identificador, datos, propietario) => {
+  const taskActualizada = await Task.findOneAndUpdate(
+    { _id: identificador, propietario },
     { $set: datos },
     {
-      returnDocument: "after",
+      returnDocument: 'after',
       runValidators: true,
     },
   );
@@ -42,6 +40,5 @@ export const actualizar = async (identificador, datos) => {
   return toDto(taskActualizada);
 };
 
-/** @param {import('../types.js').Id} identificador @returns {Promise<import('../types.js').Tarea | null>} */
-export const eliminar = async (identificador) =>
-  toDto(await Task.findByIdAndDelete(identificador));
+/** @param {import('../types.js').Id} identificador @param {import('../types.js').Id} propietario @returns {Promise<import('../types.js').Tarea | null>} */
+export const eliminar = async (identificador, propietario) => toDto(await Task.findOneAndDelete({ _id: identificador, propietario }));

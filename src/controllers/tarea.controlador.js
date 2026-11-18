@@ -7,7 +7,8 @@ import * as obtenerTareaPorId from '../useCases/tasks/obtener-tarea-por-id.caso-
 /** @type {import('express').RequestHandler} */
 export const listar = async (solicitud, respuesta, siguiente) => {
   try {
-    const tareas = await listarTareas.ejecutar(solicitud.query);
+    const { usuario } = solicitud;
+    const tareas = await listarTareas.ejecutar(solicitud.query, usuario.id);
     return respuesta.json(tareas);
   } catch (error) {
     siguiente(error);
@@ -17,7 +18,7 @@ export const listar = async (solicitud, respuesta, siguiente) => {
 /** @type {import('express').RequestHandler} */
 export const obtenerPorId = async (solicitud, respuesta, siguiente) => {
   try {
-    const tarea = await obtenerTareaPorId.ejecutar(solicitud.params.id);
+    const tarea = await obtenerTareaPorId.ejecutar(solicitud.params.id, solicitud.usuario.id);
     return respuesta.json(tarea);
   } catch (error) {
     siguiente(error);
@@ -27,7 +28,8 @@ export const obtenerPorId = async (solicitud, respuesta, siguiente) => {
 /** @type {import('express').RequestHandler} */
 export const crear = async (solicitud, respuesta, siguiente) => {
   try {
-    const tarea = await crearTarea.ejecutar(solicitud.body);
+    const { usuario } = solicitud;
+    const tarea = await crearTarea.ejecutar(solicitud.body, usuario.id);
     return respuesta.status(201).json(tarea);
   } catch (error) {
     siguiente(error);
@@ -37,7 +39,7 @@ export const crear = async (solicitud, respuesta, siguiente) => {
 /** @type {import('express').RequestHandler} */
 export const actualizar = async (solicitud, respuesta, siguiente) => {
   try {
-    const tarea = await actualizarTarea.ejecutar(solicitud.params.id, solicitud.body);
+    const tarea = await actualizarTarea.ejecutar(solicitud.params.id, solicitud.body, solicitud.usuario.id);
     return respuesta.json(tarea);
   } catch (error) {
     siguiente(error);
@@ -47,7 +49,7 @@ export const actualizar = async (solicitud, respuesta, siguiente) => {
 /** @type {import('express').RequestHandler} */
 export const eliminar = async (solicitud, respuesta, siguiente) => {
   try {
-    await eliminarTarea.ejecutar(solicitud.params.id);
+    await eliminarTarea.ejecutar(solicitud.params.id, solicitud.usuario.id);
     return respuesta.status(204).send();
   } catch (error) {
     siguiente(error);

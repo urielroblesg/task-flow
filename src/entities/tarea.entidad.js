@@ -11,7 +11,7 @@ const taskSchema = new Schema({
   priority: {
     type: SchemaTypes.String, enum: ['low', 'medium', 'high'], default: 'medium',
   },
-  ownerId: { type: SchemaTypes.ObjectId },
+  propietario: { type: SchemaTypes.ObjectId, index: true, ref: 'Usuario', required: true },
 }, {
   timestamps: true, collection: 'tasks',
 });

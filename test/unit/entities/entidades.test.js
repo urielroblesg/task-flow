@@ -5,14 +5,16 @@ import { Rol } from '../../../src/entities/rol.entidad.js';
 import { Usuario, userSchema } from '../../../src/entities/usuario.entidad.js';
 
 describe('Task', () => {
+  const propietario = '507f191e810c19729de860ea';
+
   it('aplica valores predeterminados y limpia título', async () => {
-    const tarea = new Task({ title: '  Probar  ' });
+    const tarea = new Task({ propietario, title: '  Probar  ' });
     await expect(tarea.validate()).resolves.toBeUndefined();
     expect(tarea).toMatchObject({ description: '', priority: 'medium', status: 'pending', title: 'Probar' });
   });
 
   it('rechaza título vacío y estado inválido', async () => {
-    await expect(new Task({ status: 'otro', title: ' ' }).validate()).rejects.toMatchObject({
+    await expect(new Task({ propietario, status: 'otro', title: ' ' }).validate()).rejects.toMatchObject({
       name: 'ValidationError',
     });
   });

@@ -8,7 +8,8 @@ import { requerirTarea } from './tarea.validaciones.js';
  * @param {import('../../types.js').Id} identificador
  * @returns {Promise<import('../../types.js').Tarea>}
  */
-export const ejecutar = async identificador => {
+export const ejecutar = async (identificador, propietario) => {
   checkId(identificador);
-  return requerirTarea(await repositorioTarea.eliminar(identificador));
+  checkId(propietario);
+  return requerirTarea(await repositorioTarea.eliminar(identificador, propietario));
 };
