@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f4f7fb;
+  color: #17233b;
+  font:
+    17px/1.6 Arial,
+    sans-serif;
+}
+header,
+main,
+footer {
+  max-width: 1050px;
+  margin: auto;
+  padding: 28px;
+}
+header {
+  background: #0b1830;
+  color: white;
+  border-top: 7px solid #18b7b1;
+}
+.etiqueta {
+  color: #7de3df;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-size: 13px;
+}
+h1 {
+  font-size: 38px;
+  margin: 4px 0;
+}
+h2 {
+  font-size: 24px;
+}
+ul {
+  padding: 0;
+  list-style: none;
+}
+.tarea {
+  background: white;
+  border: 1px solid #d8e1ef;
+  border-left: 6px solid #3559a6;
+  border-radius: 10px;
+  margin: 15px 0;
+  padding: 18px;
+}
+.tarea h3 {
+  margin: 0;
+}
+.tarea[data-estado="completada"] {
+  border-left-color: #11826c;
+}
+.tarea[data-estado="completada"] h3 {
+  text-decoration: line-through;
+}
+button {
+  padding: 8px 12px;
+  border: 1px solid #3559a6;
+  border-radius: 6px;
+  background: #eef5ff;
+  color: #163875;
+}
+button:disabled {
+  opacity: 0.6;
+}
+aside {
+  background: #fff8eb;
+  padding: 20px;
+  border-left: 6px solid #d97706;
+}
+footer {
+  color: #475569;
+  font-size: 14px;
+}
+[hidden] {
+  display: none !important;
+}

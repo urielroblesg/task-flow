@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TaskFlow · Laboratorio DOM S25</title>
+    <link rel="stylesheet" href="/assets/css/tareas.css" />
+  </head>
+  <body>
+    <header>
+      <p class="etiqueta">TASKFLOW · SESIÓN 25</p>
+      <h1 id="titulo">Laboratorio DOM</h1>
+      <p>
+        Las tareas de esta vista son ejemplos locales. Los cambios se pierden al
+        recargar.
+      </p>
+    </header>
+    <main>
+      <section aria-labelledby="lista-titulo">
+        <h2 id="lista-titulo">Mis tareas</h2>
+        <p id="resumen" aria-live="polite">Esperando renderizado…</p>
+        <p id="vacio" hidden>No hay tareas en la lista.</p>
+        <ul id="lista-tareas" aria-label="Lista de tareas"></ul>
+      </section>
+      <aside aria-labelledby="lab-titulo">
+        <h2 id="lab-titulo">Zona de experimentos</h2>
+        <div id="contenido-demo">
+          <strong>Texto visible</strong><span hidden>Texto oculto</span>
+        </div>
+        <div id="insercion-demo"></div>
+        <p id="mensaje" role="status">
+          Abre DevTools: inspecciona Elements y ejecuta los comandos de la guía
+          en Console.
+        </p>
+      </aside>
+    </main>
+    <footer>
+      DOM en el navegador. Express entrega archivos. MongoDB conserva datos
+      cuando la API los guarda.
+    </footer>
+    <script type="module" src="/assets/js/datos-tareas.js"></script>
+    <script type="module" src="/assets/js/tareas.js"></script>
+  </body>
+</html>

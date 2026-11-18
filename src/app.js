@@ -5,9 +5,11 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 // Importaciones de la aplicacion (Propias)
-import enrutadorAutenticacion from './routes/autenticacion.rutas.js';
-import enrutadorTarea from './routes/tarea.rutas.js';
-import enrutadorUsuario from './routes/usuario.rutas.js';
+import enrutadorAutenticacionApi from './routes/autenticacion.api.rutas.js';
+import enrutadorTareaApi from './routes/tarea.api.rutas.js';
+import enrutadorUsuarioApi from './routes/usuario.api.rutas.js';
+
+import enrutadorTareasCliente from './routes/tarea.client.rutas.js';
 import manejadorErrores from './middlewares/manejador.errores.js';
 
 const aplicacion = express();
@@ -26,9 +28,13 @@ const directorioPublico = path.join(process.cwd(), 'public');
 
 aplicacion.use('/assets', express.static(path.join(directorioPublico, 'assets')));
 
-aplicacion.use('/api/v1/auth', enrutadorAutenticacion);
-aplicacion.use('/api/v1/tasks', enrutadorTarea);
-aplicacion.use('/api/v1/users', enrutadorUsuario);
+// Rutas de la API
+aplicacion.use('/api/v1/auth', enrutadorAutenticacionApi);
+aplicacion.use('/api/v1/tasks', enrutadorTareaApi);
+aplicacion.use('/api/v1/users', enrutadorUsuarioApi);
+
+// Rutas del front-end
+aplicacion.use('/tareas', enrutadorTareasCliente);
 
 aplicacion.get('/', (solicitud, respuesta) => {
   respuesta.sendFile('index.html', {
