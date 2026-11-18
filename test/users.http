@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3000/api/v1
+@token_sin_permiso = REEMPLAZAR_TOKEN_USUARIO
+@token = REEMPLAZAR_TOKEN_ADMIN
+@userId = REEMPLAZAR_ID_USUARIO
+@roleId = REEMPLAZAR_ID_ROL
+
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{token}}
+
+###
+POST {{baseUrl}}/users
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"name":"Usuario","email":"usuario@example.com","password":"contrasena-segura","rol":"{{roleId}}"}
+
+###
+PATCH {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"isActive": false}
+
+###
+DELETE {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{token}}

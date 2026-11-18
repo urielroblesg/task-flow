@@ -7,7 +7,7 @@ export interface TareaEntrada {
   description?: string;
   status?: 'pending' | 'in_progress' | 'done';
   priority?: 'low' | 'medium' | 'high';
-  ownerId?: Id;
+  propietario?: Id;
 }
 
 export interface Tarea extends TareaEntrada {
@@ -24,6 +24,7 @@ export interface UsuarioEntrada {
   email: string;
   password: string;
   rol?: Id;
+  isActive?: boolean;
 }
 
 export interface Usuario extends UsuarioEntrada {

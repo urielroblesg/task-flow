@@ -7,6 +7,7 @@ import morgan from 'morgan';
 // Importaciones de la aplicacion (Propias)
 import enrutadorAutenticacion from './routes/autenticacion.rutas.js';
 import enrutadorTarea from './routes/tarea.rutas.js';
+import enrutadorUsuario from './routes/usuario.rutas.js';
 import manejadorErrores from './middlewares/manejador.errores.js';
 
 const aplicacion = express();
@@ -27,6 +28,7 @@ aplicacion.use('/assets', express.static(path.join(directorioPublico, 'assets'))
 
 aplicacion.use('/api/v1/auth', enrutadorAutenticacion);
 aplicacion.use('/api/v1/tasks', enrutadorTarea);
+aplicacion.use('/api/v1/users', enrutadorUsuario);
 
 aplicacion.get('/', (solicitud, respuesta) => {
   respuesta.sendFile('index.html', {

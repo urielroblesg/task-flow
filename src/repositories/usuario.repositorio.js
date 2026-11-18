@@ -25,3 +25,22 @@ export const crear = async datos => {
 
 /** @param {import('../types.js').Id} id @returns {Promise<import('../types.js').Usuario | null>} */
 export const buscarPorId = async id => toDto(await Usuario.findById(id));
+
+/** @returns {Promise<import('../types.js').Usuario[]>} */
+export const buscarTodos = async () => (await Usuario.find()).map(toDto);
+
+/** @param {import('../types.js').Id} id @param {Partial<import('../types.js').UsuarioEntrada & {isActive: boolean}>} datos @returns {Promise<import('../types.js').Usuario | null>} */
+export const actualizar = async (id, datos) => {
+  const usuario = await Usuario.findById(id);
+  if (!usuario) return null;
+  Object.assign(usuario, datos);
+  await usuario.save();
+  return toDto(usuario);
+};
+
+/** @param {import('../types.js').Id} id @returns {Promise<import('../types.js').Usuario | null>} */
+export const desactivar = async id => toDto(await Usuario.findByIdAndUpdate(
+  id,
+  { $set: { isActive: false } },
+  { returnDocument: 'after', runValidators: true },
+));
